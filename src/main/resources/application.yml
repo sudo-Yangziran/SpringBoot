@@ -2,10 +2,10 @@ logging:
   config: classpath:logback.xml
 spring:
   datasource:
-    url: jdbc:postgresql://42.192.90.239:5665/blogdb
+    url: jdbc:postgresql://127.0.0.1:5665/blogdb
     username: postgres
     driver-class-name: org.postgresql.Driver
-    password: youkillpsql
+    password: root
   security:
     oauth2:
       client:
