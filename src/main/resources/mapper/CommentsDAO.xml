@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.youkill.composeown.dao.CommentsDAO">
+  <resultMap id="BaseResultMap" type="com.youkill.composeown.entity.Comments">
+    <id column="ids" jdbcType="VARCHAR" property="ids" />
+    <result column="fileid" jdbcType="VARCHAR" property="fileid" />
+    <result column="txt" jdbcType="VARCHAR" property="txt" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="username" jdbcType="VARCHAR" property="username" />
+    <result column="revertid" jdbcType="VARCHAR" property="revertid" />
+    <result column="likenumber" jdbcType="INTEGER" property="likenumber" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    ids, fileid, txt, create_time, username, revertid, likenumber
+  </sql>
+  <select id="SelectList" parameterType="java.util.Map" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from "comments"
+    where fileid = #{ids,jdbcType=VARCHAR}
+    limit 10
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from "comments"
+    where ids = #{ids,jdbcType=VARCHAR}
+  </delete>
+  <insert id="AddComments" keyColumn="ids" keyProperty="ids" parameterType="com.youkill.composeown.entity.Comments" useGeneratedKeys="true">
+    insert into "comments" (ids,fileid, txt, create_time,
+      username, revertid, likenumber
+      )
+    values (#{ids,jdbcType=VARCHAR},#{fileid,jdbcType=VARCHAR}, #{txt,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},
+      #{username,jdbcType=VARCHAR}, #{revertid,jdbcType=VARCHAR}, #{likenumber,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" keyColumn="ids" keyProperty="ids" parameterType="com.youkill.composeown.entity.Comments" useGeneratedKeys="true">
+    insert into "comments"
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="fileid != null">
+        fileid,
+      </if>
+      <if test="txt != null">
+        txt,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="username != null">
+        username,
+      </if>
+      <if test="revertid != null">
+        revertid,
+      </if>
+      <if test="likenumber != null">
+        likenumber,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="fileid != null">
+        #{fileid,jdbcType=VARCHAR},
+      </if>
+      <if test="txt != null">
+        #{txt,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="username != null">
+        #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="revertid != null">
+        #{revertid,jdbcType=VARCHAR},
+      </if>
+      <if test="likenumber != null">
+        #{likenumber,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.youkill.composeown.entity.Comments">
+    update "comments"
+    <set>
+      <if test="fileid != null">
+        fileid = #{fileid,jdbcType=VARCHAR},
+      </if>
+      <if test="txt != null">
+        txt = #{txt,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="username != null">
+        username = #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="revertid != null">
+        revertid = #{revertid,jdbcType=VARCHAR},
+      </if>
+      <if test="likenumber != null">
+        likenumber = #{likenumber,jdbcType=INTEGER},
+      </if>
+    </set>
+    where ids = #{ids,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.youkill.composeown.entity.Comments">
+    update "comments"
+    set fileid = #{fileid,jdbcType=VARCHAR},
+      txt = #{txt,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      username = #{username,jdbcType=VARCHAR},
+      revertid = #{revertid,jdbcType=VARCHAR},
+      likenumber = #{likenumber,jdbcType=INTEGER}
+    where ids = #{ids,jdbcType=VARCHAR}
+  </update>
+</mapper>

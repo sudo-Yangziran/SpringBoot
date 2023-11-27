@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.youkill.composeown.dao.ArticlesDAO">
+  <resultMap id="BaseResultMap" type="com.youkill.composeown.entity.Articles">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="createowner_id" jdbcType="INTEGER" property="createownerId" />
+    <result column="create_time" jdbcType="DATE" property="createTime" />
+    <result column="last_save_time" jdbcType="DATE" property="lastSaveTime" />
+    <result column="release_date" jdbcType="DATE" property="releaseDate" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="lokknum" jdbcType="INTEGER" property="looknum"/>
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, title, createowner_id, create_time, last_save_time, release_date, "status"
+  </sql>
+  <select id="GetFileName" parameterType="string" resultType="string">
+    select id from "articles" where title=#{title}
+  </select>
+  <insert id="CreateArticle" keyColumn="id" keyProperty="id" parameterType="com.youkill.composeown.entity.Articles">
+    insert into "articles" (id,title, createowner_id, create_time,
+                            last_save_time, release_date, "status"
+    )
+    values (#{id,jdbcType=VARCHAR},#{title,jdbcType=VARCHAR}, #{createownerId,jdbcType=VARCHAR}, #{createTime,jdbcType=DATE},
+            #{lastSaveTime,jdbcType=DATE}, #{releaseDate,jdbcType=DATE}, #{status,jdbcType=INTEGER}
+           )
+  </insert>
+  <select id="list" parameterType="java.util.Map" resultMap="BaseResultMap">
+    select
+      title, createowner_id, create_time, last_save_time, status
+    from "articles"
+           limit #{page, jdbcType=INTEGER} offset #{current, jdbcType=INTEGER}
+  </select>
+  <select id="indexList" parameterType="java.util.Map" resultMap="BaseResultMap">
+    select
+      title, createowner_id, create_time, last_save_time, status
+    from "articles" where status='1'
+           limit #{page, jdbcType=INTEGER} offset #{current, jdbcType=INTEGER}
+  </select>
+
+  <select id="ArticleList" resultMap="BaseResultMap">
+    SELECT id,title, createowner_id, create_time, last_save_time,looknum
+    FROM articles     where status='1'
+
+    <if test="flag==1">
+        order by create_time
+    </if>
+    limit 6
+  </select>
+  <select id="SelectArticlesLimit" resultMap="BaseResultMap">
+    select id,title,last_save_time,status from articles where status = 1  order by last_save_time limit #{number};
+
+  </select>
+  <select id="GetArticl" resultMap="BaseResultMap">
+    select id,title, createowner_id, create_time, last_save_time,looknum
+    from articles where title=#{title} limit 1
+  </select>
+
+
+<!--  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">-->
+<!--    select -->
+<!--    <include refid="Base_Column_List" />-->
+<!--    from "articles"-->
+<!--    where id = #{id,jdbcType=INTEGER}-->
+<!--  </select>-->
+<!--  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">-->
+<!--    delete from "articles"-->
+<!--    where id = #{id,jdbcType=INTEGER}-->
+<!--  </delete>-->
+<!--  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.youkill.composeown.entity.Articles" useGeneratedKeys="true">-->
+<!--    insert into "articles" (title, createowner_id, create_time, -->
+<!--      last_save_time, release_date, "status"-->
+<!--      )-->
+<!--    values (#{title,jdbcType=VARCHAR}, #{createownerId,jdbcType=INTEGER}, #{createTime,jdbcType=DATE}, -->
+<!--      #{lastSaveTime,jdbcType=DATE}, #{releaseDate,jdbcType=DATE}, #{status,jdbcType=INTEGER}-->
+<!--      )-->
+<!--  </insert>-->
+<!--  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.youkill.composeown.entity.Articles" useGeneratedKeys="true">-->
+<!--    insert into "articles"-->
+<!--    <trim prefix="(" suffix=")" suffixOverrides=",">-->
+<!--      <if test="title != null">-->
+<!--        title,-->
+<!--      </if>-->
+<!--      <if test="createownerId != null">-->
+<!--        createowner_id,-->
+<!--      </if>-->
+<!--      <if test="createTime != null">-->
+<!--        create_time,-->
+<!--      </if>-->
+<!--      <if test="lastSaveTime != null">-->
+<!--        last_save_time,-->
+<!--      </if>-->
+<!--      <if test="releaseDate != null">-->
+<!--        release_date,-->
+<!--      </if>-->
+<!--      <if test="status != null">-->
+<!--        "status",-->
+<!--      </if>-->
+<!--    </trim>-->
+<!--    <trim prefix="values (" suffix=")" suffixOverrides=",">-->
+<!--      <if test="title != null">-->
+<!--        #{title,jdbcType=VARCHAR},-->
+<!--      </if>-->
+<!--      <if test="createownerId != null">-->
+<!--        #{createownerId,jdbcType=INTEGER},-->
+<!--      </if>-->
+<!--      <if test="createTime != null">-->
+<!--        #{createTime,jdbcType=DATE},-->
+<!--      </if>-->
+<!--      <if test="lastSaveTime != null">-->
+<!--        #{lastSaveTime,jdbcType=DATE},-->
+<!--      </if>-->
+<!--      <if test="releaseDate != null">-->
+<!--        #{releaseDate,jdbcType=DATE},-->
+<!--      </if>-->
+<!--      <if test="status != null">-->
+<!--        #{status,jdbcType=INTEGER},-->
+<!--      </if>-->
+<!--    </trim>-->
+<!--  </insert>-->
+  <update id="notArticleState" parameterType="string">
+    UPDATE articles
+    SET status = CASE
+                   WHEN status = '1' THEN '0'
+                   WHEN status = '0' THEN '1'
+                   ELSE status
+      END
+    where title = #{title,jdbcType=VARCHAR}
+  </update>
+
+  <select id="count" resultType="int">
+    select count(*) from articles;
+  </select>
+  <!--  <update id="updateByPrimaryKey" parameterType="com.youkill.composeown.entity.Articles">-->
+<!--    update "articles"-->
+<!--    set title = #{title,jdbcType=VARCHAR},-->
+<!--      createowner_id = #{createownerId,jdbcType=INTEGER},-->
+<!--      create_time = #{createTime,jdbcType=DATE},-->
+<!--      last_save_time = #{lastSaveTime,jdbcType=DATE},-->
+<!--      release_date = #{releaseDate,jdbcType=DATE},-->
+<!--      "status" = #{status,jdbcType=INTEGER}-->
+<!--    where id = #{id,jdbcType=INTEGER}-->
+<!--  </update>-->
+</mapper>

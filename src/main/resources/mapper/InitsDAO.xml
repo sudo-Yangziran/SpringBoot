@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.youkill.composeown.dao.InitsDAO">
+  <resultMap id="BaseResultMap" type="com.youkill.composeown.entity.Inits">
+    <id column="systemvalue" jdbcType="VARCHAR" property="systemvalue" />
+    <result column="value" jdbcType="VARCHAR" property="value" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    systemvalue, "value"
+  </sql>
+  <select id="SelectSystemValue" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from "inits"
+    where systemvalue = #{systemvalue,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from "inits"
+    where systemvalue = #{systemvalue,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" keyColumn="systemvalue" keyProperty="systemvalue" parameterType="com.youkill.composeown.entity.Inits" useGeneratedKeys="true">
+    insert into "inits" ("value")
+    values (#{value,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" keyColumn="systemvalue" keyProperty="systemvalue" parameterType="com.youkill.composeown.entity.Inits" useGeneratedKeys="true">
+    insert into "inits"
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="value != null">
+        "value",
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="value != null">
+        #{value,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.youkill.composeown.entity.Inits">
+    update "inits"
+    <set>
+      <if test="value != null">
+        "value" = #{value,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where systemvalue = #{systemvalue,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.youkill.composeown.entity.Inits">
+    update "inits"
+    set "value" = #{value,jdbcType=VARCHAR}
+    where systemvalue = #{systemvalue,jdbcType=VARCHAR}
+  </update>
+</mapper>

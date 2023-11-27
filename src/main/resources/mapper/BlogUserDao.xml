@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.youkill.composeown.dao.BlogUserDao">
+  <resultMap id="BaseResultMap" type="com.youkill.composeown.entity.BlogUser">
+    <id column="username" jdbcType="VARCHAR" property="username" />
+    <result column="password" jdbcType="VARCHAR" property="password" />
+    <result column="authority" jdbcType="VARCHAR" property="authority" />
+    <result column="email" jdbcType="VARCHAR" property="email" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="last_online" jdbcType="TIMESTAMP" property="lastOnline" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+  </resultMap>
+
+
+  <sql id="Base_Column_List">
+    username, "password", authority, email, "status", last_online, create_time
+  </sql>
+
+  <select id="ListUser" resultMap="BaseResultMap">
+    select * from "blog_user"
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from "blog_user"
+    where username = #{username,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from "blog_user"
+    where username = #{username,jdbcType=VARCHAR}
+  </delete>
+  <select id="selectNameByUser" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from "blog_user"
+    where email = #{email,jdbcType=VARCHAR}
+  </select>
+  <insert id="insert" keyColumn="username" keyProperty="username" parameterType="com.youkill.composeown.entity.BlogUser" useGeneratedKeys="true">
+    insert into "blog_user" ("password", authority, email,
+                             "status", last_online, create_time
+    )
+    values (#{password,jdbcType=VARCHAR}, #{authority,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR},
+            #{status,jdbcType=INTEGER}, #{lastOnline,jdbcType=TIMESTAMP}, #{createTime,jdbcType=TIMESTAMP}
+           )
+  </insert>
+  <insert id="insertSelective" keyColumn="username" keyProperty="username" parameterType="com.youkill.composeown.entity.BlogUser" useGeneratedKeys="true">
+    insert into "blog_user"
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="password != null">
+        "password",
+      </if>
+      <if test="authority != null">
+        authority,
+      </if>
+      <if test="email != null">
+        email,
+      </if>
+      <if test="status != null">
+        "status",
+      </if>
+      <if test="lastOnline != null">
+        last_online,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="password != null">
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="authority != null">
+        #{authority,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null">
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="lastOnline != null">
+        #{lastOnline,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.youkill.composeown.entity.BlogUser">
+    update "blog_user"
+    <set>
+      <if test="password != null">
+        "password" = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="authority != null">
+        authority = #{authority,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null">
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        "status" = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="lastOnline != null">
+        last_online = #{lastOnline,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where username = #{username,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.youkill.composeown.entity.BlogUser">
+    update "blog_user"
+    set "password" = #{password,jdbcType=VARCHAR},
+        authority = #{authority,jdbcType=VARCHAR},
+        email = #{email,jdbcType=VARCHAR},
+        "status" = #{status,jdbcType=INTEGER},
+        last_online = #{lastOnline,jdbcType=TIMESTAMP},
+        create_time = #{createTime,jdbcType=TIMESTAMP}
+    where username = #{username,jdbcType=VARCHAR}
+  </update>
+</mapper>

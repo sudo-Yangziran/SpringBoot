@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.youkill.composeown.dao.FilesDAO">
+  <resultMap id="BaseResultMap" type="com.youkill.composeown.entity.Files">
+    <id column="ids" jdbcType="VARCHAR" property="ids" />
+    <result column="realname" jdbcType="VARCHAR" property="realname" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    ids, realname
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from "files"
+    where ids = #{ids,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from "files"
+    where ids = #{ids,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" keyColumn="ids" keyProperty="ids" parameterType="com.youkill.composeown.entity.Files" useGeneratedKeys="true">
+    insert into "files" (realname)
+    values (#{realname,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertFiles" keyColumn="ids" keyProperty="ids" parameterType="com.youkill.composeown.entity.Files" useGeneratedKeys="true">
+    insert into "files" (ids, realname)
+    values (#{ids, jdbcType=VARCHAR}, #{realname, jdbcType=VARCHAR})
+  </insert>  <update id="updateByPrimaryKeySelective" parameterType="com.youkill.composeown.entity.Files">
+    update "files"
+    <set>
+      <if test="realname != null">
+        realname = #{realname,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ids = #{ids,jdbcType=VARCHAR}
+  </update>
+  <update id="updateBySao" parameterType="com.youkill.composeown.entity.Files">
+    update "files"
+    set realname = #{realname,jdbcType=VARCHAR}
+    where realname = #{ids,jdbcType=VARCHAR}
+  </update>
+</mapper>

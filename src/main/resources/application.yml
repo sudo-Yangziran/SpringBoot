@@ -1,0 +1,23 @@
+logging:
+  config: classpath:logback.xml
+spring:
+  datasource:
+    url: jdbc:postgresql://42.192.90.239:5665/blogdb
+    username: postgres
+    driver-class-name: org.postgresql.Driver
+    password: youkillpsql
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+  servlet:
+    multipart:
+      max-file-size: 40MB
+server:
+  port: 9191
+mybatis:
+  mapper-locations: classpath*:/mapper/*.xml
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
